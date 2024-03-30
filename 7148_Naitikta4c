@@ -1,0 +1,82 @@
+//naitikta_7148
+import java.util.Scanner;
+
+class Employee {
+    private String nameOfEmp;
+    private int empId;
+    private double basicSalary;
+    private double grossSalary;
+
+    public void setData() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Name of Employee: ");
+        this.nameOfEmp = scanner.nextLine();
+        System.out.print("Enter Employee ID: ");
+        this.empId = scanner.nextInt();
+        System.out.print("Enter Basic Salary: ");
+        this.basicSalary = scanner.nextDouble();
+        scanner.close();
+        calculateGrossSalary();
+    }
+
+    private void calculateGrossSalary() {
+        double hra = 0.25 * basicSalary;
+        double da = 0.40 * basicSalary;
+        this.grossSalary = basicSalary + hra + da;
+    }
+
+    public String getNameOfEmp() {
+        return nameOfEmp;
+    }
+
+    public int getEmpId() {
+        return empId;
+    }
+
+    public double getGrossSalary() {
+        return grossSalary;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of employees: ");
+        int numEmployees = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        Employee[] employees = new Employee[numEmployees];
+        for (int i = 0; i < numEmployees; i++) {
+            System.out.println("Enter details for Employee " + (i + 1) + ":");
+            employees[i] = new Employee();
+            employees[i].setData();
+        }
+
+        System.out.println("\nEmployees whose name starts with a consonant:");
+        for (Employee emp : employees) {
+            if (!startsWithVowel(emp.getNameOfEmp().toLowerCase())) {
+                System.out.println("Name: " + emp.getNameOfEmp() + ", Gross Salary: " + emp.getGrossSalary());
+            }
+        }
+
+        System.out.println("\nEmployees whose Emp-Id is between 101 and 150:");
+        for (Employee emp : employees) {
+            if (emp.getEmpId() >= 101 && emp.getEmpId() <= 150) {
+                System.out.println("Emp-Id: " + emp.getEmpId() + ", Gross Salary: " + emp.getGrossSalary());
+            }
+        }
+
+        int count = 0;
+        for (Employee emp : employees) {
+            if (emp.getGrossSalary() < 35000) {
+                count++;
+            }
+        }
+        System.out.println("\nTotal number of employees whose Gross Salary is less than 35000: " + count);
+    }
+
+    private static boolean startsWithVowel(String str) {
+        char firstChar = str.charAt(0);
+        return firstChar == 'a' || firstChar == 'e' || firstChar == 'i' || firstChar == 'o' || firstChar == 'u';
+    }
+}
